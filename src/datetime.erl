@@ -290,7 +290,7 @@ list_to_month("Dec") -> 12.
 
 get_new_order_id() ->
 	% TS = erlang:system_time(micro_seconds),
-	TString = utils_time:now(ts),
+	TString = now(ts),
 	Rand = rand:uniform(?RAND_INDEX),
 	%RandBin = << ?RAND_PREFIX, integer_to_binary(Rand) >>,
 	RandList = [?RAND_PREFIX, integer_to_list(Rand)],
