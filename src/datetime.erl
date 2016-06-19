@@ -6,7 +6,7 @@
 %%% @end
 %%% Created : 23. Mar 2016 20:59
 %%%-------------------------------------------------------------------
--module(utils_time).
+-module(datetime).
 -author("simonxu").
 
 %% API
