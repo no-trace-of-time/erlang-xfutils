@@ -5,6 +5,10 @@
 -export([now/0,now/1,
 		 yesterday/0,yesterday/1
 		]).
+%% web module exports
+-export([proplist_to_iolist/1,
+		 proplist_to_binary/1
+		]).
 
 %% txn module exports
 -export([get_new_order_id/0]).
