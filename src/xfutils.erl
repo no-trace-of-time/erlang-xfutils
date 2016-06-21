@@ -12,6 +12,7 @@
 %%====================================================================
 %% API functions
 %%====================================================================
+%% datetime
 now() ->
 		datetime:now().
 
@@ -32,6 +33,17 @@ today(Type) ->
 
 get_new_order_id() ->
 		datetime:get_new_order_id().
+
+%% web related
+-spec proplist_to_iolist(PL) -> iolist() when
+		  PL :: proplists:proplist().
+proplist_to_iolist(PL) when is_list(PL) ->
+		utils_web:post_vals_to_iolist(PL).
+
+-spec proplist_to_binary(PL) -> binary() when
+		  PL :: proplists:proplist().
+proplist_to_iolist(PL) when is_list(PL) ->
+		utils_web:post_vals_to_string(PL).
 
 
 %%====================================================================
