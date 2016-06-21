@@ -46,7 +46,7 @@ proplist_to_iolist(PL) when is_list(PL) ->
 
 -spec proplist_to_binary(PL) -> binary() when
 		  PL :: proplists:proplist().
-proplist_to_iolist(PL) when is_list(PL) ->
+proplist_to_binary(PL) when is_list(PL) ->
 		utils_web:post_vals_to_string(PL).
 
 
