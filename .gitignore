@@ -12,3 +12,5 @@ _build
 *.DS_Store
 *.swp
 .idea/*
+
+rebar.lock
