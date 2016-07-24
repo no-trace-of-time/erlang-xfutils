@@ -35,6 +35,10 @@
 	,      yesterday/1
 ]).
 
+
+
+
+%%--------------------------------------------------------
 now() ->
 	now(local).
 
@@ -48,22 +52,38 @@ now(txn) ->
 now(ts) ->
 	now_to_local_ts_string(erlang:timestamp()).
 
+%%--------------------------------------------------------
+-spec today() -> Date when
+		  Date:: types:date_format_yyyymmdd().
+
 today() ->
 	localtime_to_yyyymmdd(localtime()).
+
+-spec today(Fmt) -> Date when
+		  Fmt :: types:today_format(),
+		  Date:: types:date_format_yyyymmdd().
 
 today(mmdd) ->
 	YYYYMMDD = today(),
 	binary:part(YYYYMMDD,4,4).
+%%--------------------------------------------------------
+-spec yesterday() -> Date when
+		  Date:: types:date_format_yyyymmdd().
 
 yesterday() ->
 	Seconds = localtime_to_seconds(localtime()),
 	YesterdayTime = calendar:gregorian_seconds_to_datetime(Seconds - 86400),
 	localtime_to_yyyymmdd(YesterdayTime).
 
+-spec yesterday(Fmt) -> Date when
+		  Fmt :: types:today_format(),
+		  Date:: types:date_format_yyyymmdd().
+
 yesterday(mmdd) ->
 	YYYYMMDD = yesterday(),
 	binary:part(YYYYMMDD,4,4).
 
+%%--------------------------------------------------------
 
 
 localtime() ->
