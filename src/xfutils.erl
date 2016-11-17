@@ -2,13 +2,24 @@
 
 %% API exports
 %% datetime module exports
--export([now/0, now/1,
-				 today/0, today/1,
-				 yesterday/0, yesterday/1
+-export([
+  now/0
+  , now/1
+  , today/0
+  , today/1
+  , yesterday/0
+  , yesterday/1
 ]).
 %% web module exports
--export([proplist_to_iolist/1,
-				 proplist_to_binary/1
+-export([
+  proplist_to_iolist/1
+  , proplist_to_binary/1
+]).
+
+%% add right yyyy prefix to mmdd
+-export([
+  prefix_yyyy_2_dtime/1
+  , prefix_yyyy_2_dtime/2
 ]).
 
 %% txn module exports
@@ -20,56 +31,68 @@
 %% datetime
 -spec now() -> list().
 now() ->
-	datetime:now().
+  utils_datetime:now().
 
 -spec now(Type) -> list() when
-		  Type:: types:now_options().
+  Type :: types:now_options().
 
 now(Type) ->
-	datetime:now(Type).
+  utils_datetime:now(Type).
 
 %%--------------------------------------------------------------------
 -spec yesterday() -> Date when
-		  Date:: types:date_format_yyyymmdd().
+  Date :: types:date_format_yyyymmdd().
 
 yesterday() ->
-	datetime:yesterday().
+  utils_datetime:yesterday().
 
 -spec yesterday(Fmt) -> Date when
-		  Fmt :: types:today_format(),
-		  Date:: types:date_format_yyyymmdd().
+  Fmt :: types:today_format(),
+  Date :: types:date_format_yyyymmdd().
 
 yesterday(Type) ->
-	datetime:yesterday(Type).
+  utils_datetime:yesterday(Type).
 
 %%--------------------------------------------------------------------
 -spec today() -> Date when
-		  Date:: types:date_format_yyyymmdd().
+  Date :: types:date_format_yyyymmdd().
 today() ->
-	datetime:today().
+  utils_datetime:today().
 
 -spec today(Fmt) -> Date when
-		  Fmt :: types:today_format(),
-		  Date:: types:date_format_yyyymmdd().
+  Fmt :: types:today_format(),
+  Date :: types:date_format_yyyymmdd().
 
 today(Type) ->
-	datetime:today(Type).
+  utils_datetime:today(Type).
 
 %%--------------------------------------------------------------------
 get_new_order_id() ->
-	datetime:get_new_order_id().
+  utils_trans:get_new_order_id().
 
+%%--------------------------------------------------------------------
 %% web related
 -spec proplist_to_iolist(PL) -> iolist() when
-	PL :: proplists:proplist().
+  PL :: proplists:proplist().
 proplist_to_iolist(PL) when is_list(PL) ->
-	xf_proplists_ex:cvt_to_iolist(PL).
+  xf_proplists_ex:cvt_to_iolist(PL).
 
 -spec proplist_to_binary(PL) -> binary() when
-	PL :: proplists:proplist().
+  PL :: proplists:proplist().
 proplist_to_binary(PL) when is_list(PL) ->
-	xf_proplists_ex:cvt_to_binary(PL).
+  xf_proplists_ex:cvt_to_binary(PL).
 
+%%--------------------------------------------------------------------
+-spec prefix_yyyy_2_dtime(DTime) -> iolist() when
+  DTime :: binary().
+prefix_yyyy_2_dtime(DTime) when is_binary(DTime) ->
+  utils_datetime:prefix_yyyy_2_dtime(DTime).
+
+-spec prefix_yyyy_2_dtime(DTime, TODAY) -> iolist() when
+  DTime :: binary(),
+  TODAY :: types:date_format_yyyymmdd().
+prefix_yyyy_2_dtime(DTime, Today) when is_binary(DTime), is_binary(Today) ->
+  utils_datetime:prefix_yyyy_2_dtime(DTime, Today).
 
 %%====================================================================
 %% Internal functions
