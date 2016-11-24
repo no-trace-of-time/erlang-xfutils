@@ -25,6 +25,11 @@
 %% txn module exports
 -export([get_new_order_id/0]).
 
+%% utils_app export
+-export([priv_dir/0
+  , priv_dir/1
+]).
+
 %%====================================================================
 %% API functions
 %%====================================================================
@@ -93,6 +98,14 @@ prefix_yyyy_2_dtime(DTime) when is_binary(DTime) ->
   TODAY :: types:date_format_yyyymmdd().
 prefix_yyyy_2_dtime(DTime, Today) when is_binary(DTime), is_binary(Today) ->
   utils_datetime:prefix_yyyy_2_dtime(DTime, Today).
+
+%%--------------------------------------------------------------------
+priv_dir() ->
+  utils_app:priv_dir().
+
+priv_dir(Application) when is_atom(Application) ->
+  utils_app:priv_dir(Application).
+
 
 %%====================================================================
 %% Internal functions

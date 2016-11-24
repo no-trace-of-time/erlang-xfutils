@@ -10,15 +10,16 @@
 -author("simonxu").
 
 %% API
--export([priv_dir/0]).
+-export([priv_dir/0
+  , priv_dir/1]).
 
--define(APP,payment_gateway).
+-define(APP, payment_gateway).
 
 -spec priv_dir() -> file:filename().
 priv_dir() ->
-	Application = case application:get_application() of
-									undefined -> ?APP;
-									{ok, App} -> App
-								end,
-	%io:format("Application=~p~n",[Application]),
-	code:priv_dir(Application).
+  {ok,Application} = application:get_application(),
+  priv_dir(Application).
+
+priv_dir(Application) ->
+  %io:format("Application=~p~n",[Application]),
+  code:priv_dir(Application).
