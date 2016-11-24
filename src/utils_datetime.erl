@@ -20,6 +20,8 @@
   , yesterday/1
   , prefix_yyyy_2_dtime/1
   , prefix_yyyy_2_dtime/2
+  , prefix_yyyy_2_settle_date/1
+  , prefix_yyyy_2_settle_date/2
 ]).
 %%--------------------------------------------------------
 now() ->
@@ -92,6 +94,30 @@ prefix_yyyy_2_dtime(DTime, <<"1231">>, ThisYear, MMDD_IN_TODAY)
 prefix_yyyy_2_dtime(DTime, _, ThisYear, _) when is_binary(DTime), is_binary(ThisYear) ->
   list_to_binary([ThisYear, DTime]).
 
+%%--------------------------------------------------------
+prefix_yyyy_2_settle_date(MMDD) when is_binary(MMDD) ->
+  prefix_yyyy_2_settle_date(MMDD, today()).
+
+prefix_yyyy_2_settle_date(MMDD, Today) when is_binary(MMDD), is_binary(Today) ->
+  <<Year_IN_TODAY:4/bytes, MMDD_IN_TODAY:4/bytes, _/binary>> = Today,
+  4 = byte_size(MMDD),
+
+  prefix_yyyy_2_settle_date(MMDD, Year_IN_TODAY, MMDD_IN_TODAY).
+
+prefix_yyyy_2_settle_date(MMDD, Year_IN_TODAY, MMDD_IN_TODAY)
+  when is_binary(MMDD), is_binary(Year_IN_TODAY), is_binary(MMDD_IN_TODAY) ->
+
+  SettleYear = case binary_to_integer(MMDD) < binary_to_integer(MMDD_IN_TODAY) of
+                 true ->
+                   %% settle date less than today, year should be next year
+                   integer_to_binary(binary_to_integer(Year_IN_TODAY) + 1);
+                 false ->
+                   %% settle date large than today, year should be same as today's year
+                   Year_IN_TODAY
+               end,
+
+  <<SettleYear/binary, MMDD/binary>>.
+
 
 %%--------------------------------------------------------
 prefix_yyyy_2_dtime_test() ->
@@ -107,4 +133,13 @@ prefix_yyyy_2_dtime_test() ->
     list_to_binary([<<"2016">>, DTime1])),
   ?assertEqual(prefix_yyyy_2_dtime(DTime1, <<"20160302">>),
     list_to_binary([<<"2016">>, DTime1])),
+  ok.
+
+prefix_yyyy_2_settle_date_test() ->
+  ?assertEqual(prefix_yyyy_2_settle_date(<<"0101">>, <<"20161231">>), <<"20170101">>),
+  ?assertEqual(prefix_yyyy_2_settle_date(<<"0101">>, <<"20161230">>), <<"20170101">>),
+  ?assertEqual(prefix_yyyy_2_settle_date(<<"0101">>, <<"20170101">>), <<"20170101">>),
+  ?assertEqual(prefix_yyyy_2_settle_date(<<"0102">>, <<"20170101">>), <<"20170102">>),
+  ?assertEqual(prefix_yyyy_2_settle_date(<<"1231">>, <<"20171230">>), <<"20171231">>),
+  ?assertEqual(prefix_yyyy_2_settle_date(<<"1230">>, <<"20171231">>), <<"20181230">>),
   ok.

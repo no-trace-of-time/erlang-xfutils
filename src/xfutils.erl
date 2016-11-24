@@ -20,6 +20,8 @@
 -export([
   prefix_yyyy_2_dtime/1
   , prefix_yyyy_2_dtime/2
+  , prefix_yyyy_2_settle_date/1
+  , prefix_yyyy_2_settle_date/2
 ]).
 
 %% txn module exports
@@ -99,6 +101,17 @@ prefix_yyyy_2_dtime(DTime) when is_binary(DTime) ->
 prefix_yyyy_2_dtime(DTime, Today) when is_binary(DTime), is_binary(Today) ->
   utils_datetime:prefix_yyyy_2_dtime(DTime, Today).
 
+%%--------------------------------------------------------------------
+-spec prefix_yyyy_2_settle_date(DTime) -> iolist() when
+  DTime :: binary().
+prefix_yyyy_2_settle_date(DTime) when is_binary(DTime) ->
+  utils_datetime:prefix_yyyy_2_settle_date(DTime).
+
+-spec prefix_yyyy_2_settle_date(DTime, TODAY) -> iolist() when
+  DTime :: binary(),
+  TODAY :: types:date_format_yyyymmdd().
+prefix_yyyy_2_settle_date(DTime, Today) when is_binary(DTime), is_binary(Today) ->
+  utils_datetime:prefix_yyyy_2_settle_date(DTime, Today).
 %%--------------------------------------------------------------------
 priv_dir() ->
   utils_app:priv_dir().
