@@ -33,7 +33,10 @@
 ]).
 
 %% mnesia transform
--export([mnesia_dump_to_file/2]).
+-export([
+  mnesia_dump_to_file/2
+  , mnesia_load_from_file/1
+]).
 
 %%====================================================================
 %% API functions
@@ -125,6 +128,9 @@ priv_dir(Application) when is_atom(Application) ->
 %%--------------------------------------------------------------------
 mnesia_dump_to_file(FileName, Table) ->
   xf_mnesia_transform:dump_to_file(FileName, Table).
+
+mnesia_load_from_file(FileName) ->
+  xf_mnesia_transform:load_from_file(FileName).
 
 %%====================================================================
 %% Internal functions
