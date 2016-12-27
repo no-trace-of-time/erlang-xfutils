@@ -33,7 +33,7 @@
 ]).
 
 %% mnesia transform
--export([dump_to_file/2]).
+-export([mnesia_dump_to_file/2]).
 
 %%====================================================================
 %% API functions
@@ -123,7 +123,7 @@ priv_dir(Application) when is_atom(Application) ->
   utils_app:priv_dir(Application).
 
 %%--------------------------------------------------------------------
-dump_to_file(FileName, Table) ->
+mnesia_dump_to_file(FileName, Table) ->
   xf_mnesia_transform:dump_to_file(FileName, Table).
 
 %%====================================================================

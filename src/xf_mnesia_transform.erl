@@ -22,6 +22,7 @@ dump_to_file(FileName, TableList) when is_list(TableList), is_binary(FileName) -
   %% dump all mnesia table to one file
   [dump_to_file(FileName, Table) || Table <- TableList];
 dump_to_file(FileName, Table) when is_atom(Table), is_binary(FileName) ->
+  lager:info("Dump ets table ~p started...", []),
   List = ets:tab2list(Table),
 
   F = fun(Term) ->
@@ -30,6 +31,7 @@ dump_to_file(FileName, Table) when is_atom(Table), is_binary(FileName) ->
 
   Text = lists:map(F, List),
   file:write_file(FileName, Text, [append]),
+  lager:info("Dump ets table ~p end...", []),
   ok.
 
 
