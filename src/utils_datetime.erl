@@ -27,6 +27,8 @@
 now() ->
   now(local).
 
+now(epoch) ->
+  erlang:system_time(milli_seconds);
 now(local) ->
   datetime:now_to_local_string(erlang:timestamp());
 now(utc) ->
