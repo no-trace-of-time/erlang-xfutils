@@ -143,5 +143,6 @@ prefix_yyyy_2_settle_date_test() ->
   ?assertEqual(prefix_yyyy_2_settle_date(<<"0101">>, <<"20170101">>), <<"20170101">>),
   ?assertEqual(prefix_yyyy_2_settle_date(<<"0102">>, <<"20170101">>), <<"20170102">>),
   ?assertEqual(prefix_yyyy_2_settle_date(<<"1231">>, <<"20171230">>), <<"20171231">>),
+  ?assertEqual(prefix_yyyy_2_settle_date(<<"1230">>, <<"20171230">>), <<"20171230">>),
   ?assertEqual(prefix_yyyy_2_settle_date(<<"1230">>, <<"20171231">>), <<"20181230">>),
   ok.
