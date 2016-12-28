@@ -100,6 +100,9 @@ prefix_yyyy_2_dtime(DTime, _, ThisYear, _) when is_binary(DTime), is_binary(This
 prefix_yyyy_2_settle_date(MMDD) when is_binary(MMDD) ->
   prefix_yyyy_2_settle_date(MMDD, today()).
 
+prefix_yyyy_2_settle_date(<<>>, _) ->
+  %% incase orig settle date is empty
+  <<>>;
 prefix_yyyy_2_settle_date(MMDD, Today) when is_binary(MMDD), is_binary(Today) ->
   <<Year_IN_TODAY:4/bytes, MMDD_IN_TODAY:4/bytes, _/binary>> = Today,
   4 = byte_size(MMDD),
@@ -145,4 +148,5 @@ prefix_yyyy_2_settle_date_test() ->
   ?assertEqual(prefix_yyyy_2_settle_date(<<"1231">>, <<"20171230">>), <<"20171231">>),
   ?assertEqual(prefix_yyyy_2_settle_date(<<"1230">>, <<"20171230">>), <<"20171230">>),
   ?assertEqual(prefix_yyyy_2_settle_date(<<"1230">>, <<"20171231">>), <<"20181230">>),
+  ?assertEqual(prefix_yyyy_2_settle_date(<<"">>, <<"20171231">>), <<"">>),
   ok.
