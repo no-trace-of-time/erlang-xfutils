@@ -9,6 +9,7 @@
   , today/1
   , yesterday/0
   , yesterday/1
+  , datetime_string_to_timestamp/1
 ]).
 %% web module exports
 -export([
@@ -90,6 +91,9 @@ today() ->
 today(Type) ->
   utils_datetime:today(Type).
 
+%%--------------------------------------------------------------------
+datetime_string_to_timestamp(String) ->
+  datetime:datetime_string_to_timestamp(String).
 %%--------------------------------------------------------------------
 get_new_order_id() ->
   utils_trans:get_new_order_id().
