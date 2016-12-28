@@ -38,6 +38,17 @@
   , mnesia_load_from_file/1
 ]).
 
+%% web
+-export([
+  only_allow/2
+  , post_get_qs/1
+  , post_vals_to_string/1
+  , post_vals_to_iolist/1
+  , parse_post_body/1
+  , record_to_proplist/3
+  , post/2
+]).
+
 %%====================================================================
 %% API functions
 %%====================================================================
@@ -131,6 +142,28 @@ mnesia_dump_to_file(FileName, Table) ->
 
 mnesia_load_from_file(FileName) ->
   xf_mnesia_transform:load_from_file(FileName).
+
+%%--------------------------------------------------------------------
+only_allow(Method, Req) when is_atom(Method) ->
+  utils_web:only_allow(Method, Req).
+
+post_get_qs(Req) ->
+  utils_web:post_get_qs(Req).
+
+post_vals_to_string(PostVals) ->
+  utils_web:post_vals_to_string(PostVals).
+
+post_vals_to_iolist(PostVals) ->
+  utils_web:post_vals_to_iolist(PostVals).
+
+parse_post_body(Body) ->
+  utils_web:parse_post_body(Body).
+
+record_to_proplist(M, Model, RecordList) ->
+  utils_web:record_to_proplist(M, Model, RecordList).
+
+post(Url, PostString) ->
+  utils_web:post(Url, PostString).
 
 %%====================================================================
 %% Internal functions
