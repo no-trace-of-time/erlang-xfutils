@@ -50,6 +50,14 @@
   , post/2
 ]).
 
+%% bin_to_hex
+-export([bin_to_hex/1
+  , hex_to_bin/1
+  , bin_to_base64_lines/1
+  , bin_to_pem/1
+  , bin_to_pem_rsa/1
+]).
+
 %%====================================================================
 %% API functions
 %%====================================================================
@@ -111,7 +119,7 @@ proplist_to_binary(PL) when is_list(PL) ->
   xf_proplists_ex:cvt_to_binary(PL).
 
 %%--------------------------------------------------------------------
--spec prefix_yyyy_2_dtime(DTiime) -> iolist() when
+-spec prefix_yyyy_2_dtime(DTime) -> iolist() when
   DTime :: binary().
 prefix_yyyy_2_dtime(DTime) when is_binary(DTime) ->
   utils_datetime:prefix_yyyy_2_dtime(DTime).
@@ -168,6 +176,22 @@ record_to_proplist(M, Model, RecordList) ->
 
 post(Url, PostString) ->
   utils_web:post(Url, PostString).
+
+%%--------------------------------------------------------------------
+bin_to_hex(Bin) when is_binary(Bin) ->
+  bin_to_hex:bin_to_hex(Bin).
+
+hex_to_bin(Hex) ->
+  bin_to_hex:hex_to_bin(Hex).
+
+bin_to_base64_lines(Bin) when is_binary(Bin) ->
+  bin_to_hex:bin_to_base64_lines(Bin).
+
+bin_to_pem(Bin) when is_binary(Bin) ->
+  bin_to_hex:bin_to_pem(Bin).
+
+bin_to_pem_rsa(Bin) when is_binary(Bin) ->
+  bin_to_hex:bin_to_pem_rsa(Bin).
 
 %%====================================================================
 %% Internal functions

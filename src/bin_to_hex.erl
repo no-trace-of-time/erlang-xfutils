@@ -11,7 +11,12 @@
 
 -compile([native, {hipe, [o3]}]).
 
--export([bin_to_hex/1, hex_to_bin/1]).
+-export([bin_to_hex/1
+  , hex_to_bin/1
+  , bin_to_base64_lines/1
+  , bin_to_pem/1
+  , bin_to_pem_rsa/1
+]).
 
 bin_to_hex(B) when is_binary(B) ->
   bin_to_hex(B, <<>>).
@@ -91,4 +96,60 @@ hex_bin_test() ->
   B = hex_to_bin(H),
   ?assertEqual(B, A),
   ok.
+
+
+bin_to_base64_lines(BinHex) when is_binary(BinHex) ->
+  Bin = hex_to_bin(BinHex),
+  BinBase64 = base64:encode(Bin),
+  L = <<<<X:64/bytes, $\n>> || <<X:64/bytes>> <= BinBase64>>,
+  lager:debug("L = ~p", [L]),
+  %% LenL64 = byte_size(L) div 64,
+  % LenL64 = length(L),
+  LenRest = byte_size(BinBase64) rem 64,
+  lager:debug("lenRest = ~p", [LenRest]),
+  Rest = binary:part(BinBase64, byte_size(BinBase64), -LenRest),
+  lager:debug("Rest = ~p", [Rest]),
+  Return = $\n,
+  BinPemPK = <<
+    L/binary,
+    Rest/binary, $\n
+  >>,
+  lager:debug("BinPemPK = ~p", [BinPemPK]),
+
+  BinPemPK.
+
+bin_to_pem(BinHex) when is_binary(BinHex) ->
+  BinBase64Lines = bin_to_base64_lines(BinHex),
+
+  Return = $\n,
+  <<
+    "-----BEGIN PUBLIC KEY-----", Return,
+    BinBase64Lines/binary,
+    "-----END PUBLIC KEY-----", Return
+  >>.
+
+bin_to_pem_rsa(BinHex) when is_binary(BinHex) ->
+  BinBase64Lines = bin_to_base64_lines(BinHex),
+
+  Return = $\n,
+  <<
+    "-----BEGIN RSA PUBLIC KEY-----", Return,
+    BinBase64Lines/binary,
+    "-----END RSA PUBLIC KEY-----", Return
+  >>.
+
+bin_to_perm_test() ->
+  B = <<"30820122300D06092A864886F70D01010105000382010F003082010A0282010100C4880BD2B22F8200089C5DD7C5CB6004BE1FDDEF833EA14072EDC780C9A6954CCB53F958C76B6E13559FAB36C5D8A3E0F663C4CC09F02ABFA1902F371A9B29222D5CB4F1332B46656FA9073D1F83EE59183C81565AEE459710E0D2CD22E767345A53B677F00C2EF8B3417BF20E3152BA017C36E8F805202EDDF9610961A6D329C83ABBC1B16FA51381C0AAA5EB65C08EB1197CD6977B74EB3FD76E18CC185D3DE3896374FFCA862E9DB4831DE3F89160BA93B1E189F350A24099DEEA22C09EE88FF705FC77A0E62DDB57D9FEFAE081AFB74D6F399E4D065FC5557C46935CB41BFB18F2B5782FA74EE5F6997DA706280220D67B9C7D0EE624D68E1D80F3B588070203010001">>,
+  Pem = bin_to_pem(B),
+  PemExpected = <<"-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxIgL0rIvggAInF3Xxctg
+BL4f3e+DPqFAcu3HgMmmlUzLU/lYx2tuE1WfqzbF2KPg9mPEzAnwKr+hkC83Gpsp
+Ii1ctPEzK0Zlb6kHPR+D7lkYPIFWWu5FlxDg0s0i52c0WlO2d/AMLvizQXvyDjFS
+ugF8Nuj4BSAu3flhCWGm0ynIOrvBsW+lE4HAqqXrZcCOsRl81pd7dOs/124YzBhd
+PeOJY3T/yoYunbSDHeP4kWC6k7HhifNQokCZ3uoiwJ7oj/cF/Heg5i3bV9n++uCB
+r7dNbzmeTQZfxVV8RpNctBv7GPK1eC+nTuX2mX2nBigCINZ7nH0O5iTWjh2A87WI
+BwIDAQAB
+-----END PUBLIC KEY-----
+">>,
+  ?assertEqual(Pem, PemExpected).
 
