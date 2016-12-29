@@ -111,7 +111,7 @@ proplist_to_binary(PL) when is_list(PL) ->
   xf_proplists_ex:cvt_to_binary(PL).
 
 %%--------------------------------------------------------------------
--spec prefix_yyyy_2_dtime(DTime) -> iolist() when
+-spec prefix_yyyy_2_dtime(DTiime) -> iolist() when
   DTime :: binary().
 prefix_yyyy_2_dtime(DTime) when is_binary(DTime) ->
   utils_datetime:prefix_yyyy_2_dtime(DTime).

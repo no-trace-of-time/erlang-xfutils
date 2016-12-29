@@ -17,9 +17,13 @@
 
 -spec priv_dir() -> file:filename().
 priv_dir() ->
-  {ok,Application} = application:get_application(),
+  {ok, Application} = application:get_application(),
   priv_dir(Application).
 
-priv_dir(Application) ->
-  %io:format("Application=~p~n",[Application]),
+priv_dir(AppDefault) ->
+  Application = case application:get_application() of
+                  undefined -> AppDefault;
+                  {ok, App} -> App
+                end,
+  %lager:info("Application=~p~n",[Application]),
   code:priv_dir(Application).
