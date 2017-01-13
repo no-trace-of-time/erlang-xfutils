@@ -179,8 +179,11 @@ pretty_exception_info(mcht_id_invalid = Reason, MchtId) ->
   Info = io_lib:format("不存在的商户号=~p", [MchtId]),
   lager:debug("Info=[~p]", [Info]),
   full_info(Reason, Info);
-pretty_exception_info(_, Field) when
-  is_atom(Field) ->
+pretty_exception_info(out_of_quota = Reason, TxnInfo) when is_tuple(TxnInfo) ->
+  Info = io_lib:format("交易金额超限=~p", [TxnInfo]),
+  lager:debug("Info=[~p]", [Info]),
+  full_info(Reason, Info);
+pretty_exception_info(_, Field) ->
   Info = io_lib:format("~p", [Field]),
   full_info(other, Info).
 
