@@ -107,6 +107,8 @@ exception_string(mcht_refund_orig_txn_seq_not_exist) ->
   <<"商户发送退货流水号查无交易"/utf8>>;
 exception_string(mcht_refund_orig_txn_status_not_success) ->
   <<"商户发送退货交易原支付交易不成功"/utf8>>;
+exception_string(out_of_quota) ->
+  <<"交易金额超限"/utf8>>;
 exception_string(_) ->
   <<"未知错误"/utf8>>.
 
