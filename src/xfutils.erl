@@ -60,7 +60,7 @@
 
 
 %% convert
--export([up_resp_code_2_txn_status/1])
+-export([up_resp_code_2_txn_status/1]).
 
 %%====================================================================
 %% API functions
