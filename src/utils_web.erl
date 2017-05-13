@@ -27,7 +27,7 @@
 %%-------
 only_allow(post, Req) ->
   {Method, Req2} = cowboy_req:method(Req),
-  io:format("Method = ~p~n", [Method]),
+  lager:debug("Method = ~p~n", [Method]),
   check_method_post(Method, Req2);
 only_allow(get, Req) ->
   {Method, Req2} = cowboy_req:method(Req),
