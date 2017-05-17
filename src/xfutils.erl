@@ -10,6 +10,7 @@
   , yesterday/0
   , yesterday/1
   , datetime_string_to_timestamp/1
+  , parse_date/1
 ]).
 %% web module exports
 -export([
@@ -145,6 +146,11 @@ prefix_yyyy_2_settle_date(DTime) when is_binary(DTime) ->
   TODAY :: types:date_format_yyyymmdd().
 prefix_yyyy_2_settle_date(DTime, Today) when is_binary(DTime), is_binary(Today) ->
   utils_datetime:prefix_yyyy_2_settle_date(DTime, Today).
+%%--------------------------------------------------------------------
+parse_date(Date) when is_list(Date) ->
+  datetime:parse_date(Date);
+parse_date(Date) when is_binary(Date) ->
+  datetime:parse_date(binary_to_list(Date)).
 %%--------------------------------------------------------------------
 priv_dir() ->
   utils_app:priv_dir().
