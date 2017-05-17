@@ -118,7 +118,7 @@ parse_datetime(TimeStr) ->
 
 % yyyy-mm-dd
 parse_date(Date) ->
-  [Y, M, D] = string:tokens(Date, "-"),
+  [Y, M, D] = string:tokens(Date, "/-"),
   Date1 = {list_to_integer(Y), list_to_integer(M), list_to_integer(D)},
   case calendar:valid_date(Date1) of
     true ->
