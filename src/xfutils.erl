@@ -203,6 +203,8 @@ bin_to_pem(Bin) when is_binary(Bin) ->
 bin_to_pem_rsa(Bin) when is_binary(Bin) ->
   bin_to_hex:bin_to_pem_rsa(Bin).
 %%--------------------------------------------------------------------
+up_resp_code_2_txn_status(undefined) ->
+  waiting;
 up_resp_code_2_txn_status(RespCode) when is_binary(RespCode) ->
   utils_convert:get_txn_status(RespCode).
 
