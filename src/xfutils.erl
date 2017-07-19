@@ -63,6 +63,14 @@
 %% convert
 -export([up_resp_code_2_txn_status/1]).
 
+%% otp
+-export([
+  child_spec/1
+  , child_spec/2
+  , parse_options/2
+  , sup_restart_strategy/0
+  , sup_restart_strategy/1
+]).
 %%====================================================================
 %% API functions
 %%====================================================================
@@ -207,6 +215,24 @@ up_resp_code_2_txn_status(undefined) ->
   waiting;
 up_resp_code_2_txn_status(RespCode) when is_binary(RespCode) ->
   utils_convert:get_txn_status(RespCode).
+
+%%--------------------------------------------------------------------
+%% otp
+child_spec(Module) when is_atom(Module) ->
+  utils_otp:child_spec(Module).
+
+child_spec(Module, Options) when is_atom(Module), is_list(Options) ->
+  utils_otp:child_spec(Module, Options);
+child_spec(Module, OptionMap) when is_atom(Module), is_map(OptionMap) ->
+  utils_otp:child_spec(Module, OptionMap).
+
+sup_restart_strategy() ->
+  utils_otp:sup_restart_strategy().
+
+sup_restart_strategy(Options) ->
+  utils_otp:sup_restart_strategy(Options);
+sup_restart_strategy(OptionsMap) ->
+  utils_otp:sup_restart_strategy(OptionsMap).
 
 %%====================================================================
 %% Internal functions
