@@ -81,6 +81,13 @@
   app_env_init_for_test/2,
   get/1
 ]).
+
+%% enckey
+-export([
+  load_private_key/1
+  , load_private_key/2
+  , load_public_key/1
+]).
 %%====================================================================
 %% API functions
 %%====================================================================
@@ -264,6 +271,32 @@ get_filename(App, Env) ->
 
 app_env_init_for_test(App, Props) ->
   utils_env:app_env_init_for_test(App, Props).
+
+%%--------------------------------------------------------------------
+%% enckey
+-spec load_private_key(KeyFileName) -> {ok, RsaKeyInfo} when
+  KeyFileName :: string() | binary(),
+  RsaKeyInfo :: binary().
+
+load_private_key(KeyFileName)
+  when is_binary(KeyFileName) orelse is_list(KeyFileName) ->
+  utils_enckey:load_private_key(KeyFileName).
+
+-spec load_private_key(KeyFileName, Pwd) -> {ok, RsaKeyInfo} when
+  KeyFileName :: string() | binary(),
+  Pwd :: string().
+
+load_private_key(KeyFileName, Pwd)
+  when (is_binary(KeyFileName) orelse is_list(KeyFileName))
+  , is_list(Pwd) ->
+  utils_enckey:load_private_key(KeyFileName, Pwd).
+
+-spec load_public_key(KeyFileName) -> {ok, RsaKeyInfo} when
+  KeyFileName :: string() | binary(),
+  RsaKeyInfo :: binary().
+load_public_key(KeyFileName)
+  when is_binary(KeyFileName) orelse is_list(KeyFileName) ->
+  utils_enckey:load_public_key(KeyFileName).
 %%====================================================================
 %% Internal functions
 %%====================================================================
