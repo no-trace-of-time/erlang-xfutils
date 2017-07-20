@@ -282,15 +282,18 @@ load_private_key(KeyFileName)
   when is_binary(KeyFileName) orelse is_list(KeyFileName) ->
   utils_enckey:load_private_key(KeyFileName).
 
+%%--------------------------------------------------------------------
 -spec load_private_key(KeyFileName, Pwd) -> {ok, RsaKeyInfo} when
   KeyFileName :: string() | binary(),
-  Pwd :: string().
+  Pwd :: string(),
+  RsaKeyInfo :: binary().
 
 load_private_key(KeyFileName, Pwd)
   when (is_binary(KeyFileName) orelse is_list(KeyFileName))
   , is_list(Pwd) ->
   utils_enckey:load_private_key(KeyFileName, Pwd).
 
+%%--------------------------------------------------------------------
 -spec load_public_key(KeyFileName) -> {ok, RsaKeyInfo} when
   KeyFileName :: string() | binary(),
   RsaKeyInfo :: binary().
