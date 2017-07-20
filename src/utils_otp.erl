@@ -77,4 +77,9 @@ sup_restart_strategy(Options) when is_list(Options) ->
   OptionsMap = parse_options({sup_restart_strategy, Options}, []),
   sup_restart_strategy(OptionsMap);
 sup_restart_strategy(OptionsMap) when is_map(OptionsMap) ->
+  #{strategy:= Strategy, intensity:=Intensity, period:=Period} = OptionsMap,
+  {Strategy, Intensity, Period}.
+
+sup_restart_strategy_test() ->
+  ?assertEqual({one_for_one, 4, 60}, sup_restart_strategy()),
   ok.
