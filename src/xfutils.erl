@@ -71,6 +71,16 @@
   , sup_restart_strategy/0
   , sup_restart_strategy/1
 ]).
+
+%% env
+-export([
+  get_path/1,
+  get_path/2,
+  get_filename/1,
+  get_filename/2,
+  app_env_init_for_test/2,
+  get/1
+]).
 %%====================================================================
 %% API functions
 %%====================================================================
@@ -234,6 +244,26 @@ sup_restart_strategy(Options) ->
 
 parse_options({OptionType, Options} = OptionTuple, Any) when is_atom(OptionType), is_list(Options) ->
   utils_otp:parse_options(OptionTuple, Any).
+
+%%--------------------------------------------------------------------
+%% env
+get(Key) ->
+  utils_env:get(Key).
+
+get_path(Env) ->
+  utils_env:get_path(Env).
+
+get_path(Env, Option) ->
+  utils_env:get_path(Env, Option).
+
+get_filename(Env) ->
+  utils_env:get_filename(Env).
+
+get_filename(App, Env) ->
+  utils_env:get_filename(App, Env).
+
+app_env_init_for_test(App, Props) ->
+  utils_env:app_env_init_for_test(App, Props).
 %%====================================================================
 %% Internal functions
 %%====================================================================
