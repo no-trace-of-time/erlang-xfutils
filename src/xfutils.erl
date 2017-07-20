@@ -234,6 +234,8 @@ sup_restart_strategy(Options) ->
 sup_restart_strategy(OptionsMap) ->
   utils_otp:sup_restart_strategy(OptionsMap).
 
+parse_options({OptionType, Options} = OptionTuple, Any) when is_atom(OptionType), is_list(Options) ->
+  utils_otp:parse_options(OptionTuple, Any).
 %%====================================================================
 %% Internal functions
 %%====================================================================
