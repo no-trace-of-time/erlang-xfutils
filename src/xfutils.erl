@@ -79,6 +79,7 @@
   get_filename/1,
   get_filename/2,
   app_env_init_for_test/2,
+  app_env_init_for_test/0,
   get/1
 ]).
 
@@ -271,6 +272,9 @@ get_filename(App, Env) ->
 
 app_env_init_for_test(App, Props) ->
   utils_env:app_env_init_for_test(App, Props).
+
+app_env_init_for_test() ->
+  utils_env:app_env_init_for_test().
 
 %%--------------------------------------------------------------------
 %% enckey
