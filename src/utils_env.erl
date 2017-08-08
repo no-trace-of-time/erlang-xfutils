@@ -17,10 +17,11 @@
   get_filename/2,
 %%  app_env_init_for_test/0,
   app_env_init_for_test/2,
+  app_env_init_for_test/0,
   get/1
 ]).
 
-%%-define(DEFAULT_APP, payment_gateway).
+-define(DEFAULT_APP, payment_gateway).
 
 get(Key) ->
   case application:get_env(Key) of
@@ -36,17 +37,19 @@ get(Key) ->
   end.
 
 app_env_init_for_test(App, Props) when is_atom(App), is_list(Props) ->
-%%  App = payment_gateway,
-%%  application:set_env(App, priv_dir, "/priv"),
-%%  application:set_env(App, mcht_keys_dir, "/keys/mcht"),
-%%  application:set_env(App, up_keys_dir, "/keys"),
-%%  application:set_env(App, db_backup_dir, "/backup.db/"),
-%%  ok.
   F = fun
         ({Key, Value}) ->
           application:set_env(App, Key, Value)
       end,
   lists:map(F, Props).
+
+app_env_init_for_test() ->
+%%  App = payment_gateway,
+  application:set_env(?DEFAULT_APP, priv_dir, "/priv"),
+  application:set_env(?DEFAULT_APP, mcht_keys_dir, "/keys/mcht"),
+  application:set_env(?DEFAULT_APP, up_keys_dir, "/keys"),
+  application:set_env(?DEFAULT_APP, db_backup_dir, "/backup.db/"),
+  ok.
 
 
 %%-------------------------------------------------------------------
