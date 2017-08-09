@@ -60,13 +60,13 @@ get_path(home) ->
   {ok, Path} = init:get_argument(home),
   Path;
 get_path(Env) when is_atom(Env) ->
-%%  case application:get_env(Env) of
-%%    undefined ->
-  {ok, Path} = application:get_env(Env),
-%%      Path;
-%%    {ok, Path} ->
-  Path;
-%%  end;
+  case application:get_env(Env) of
+    undefined ->
+      {ok, Path} = application:get_env(?DEFAULT_APP, Env),
+      Path;
+    {ok, Path} ->
+      Path
+  end;
 get_path(EnvList) when is_list(EnvList) ->
   Path = [[get_path(Item), "/"] || Item <- EnvList],
   lists:flatten(Path).
