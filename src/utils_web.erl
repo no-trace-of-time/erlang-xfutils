@@ -175,8 +175,8 @@ parse_kv(X) when is_binary(X) ->
   %io:format("X=~p~n",[X]),
   [K, V] = binary:split(X, [<<"=">>], [trim]),
   K1 = binary:replace(K, [<<" ">>], <<"">>),
-  V1 = binary:replace(V, [<<" ">>], <<"">>),
-  {K1, V1}.
+%%  V1 = binary:replace(V, [<<" ">>], <<"">>),
+  {K1, V}.
 
 parse_post_body_test() ->
   A = <<"accessType=0&bizType=000201&currencyCode=156&encoding=UTF-8&issuerIdentifyMode=0"
