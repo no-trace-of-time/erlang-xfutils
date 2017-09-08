@@ -23,6 +23,12 @@
 child_spec(Module) when is_atom(Module) ->
   child_spec(Module, []).
 
+child_spec(Module, dynamic) ->
+  OptionsMap = parse_options({dynamic_child_spec, []}, Module),
+  child_spec(Module, OptionsMap);
+child_spec(Module, supervisor) ->
+  OptionsMap = parse_options({child_spec, [{type, supervisor}]}, Module),
+  child_spec(Module, OptionsMap);
 child_spec(Module, Options) when is_atom(Module), is_list(Options) ->
   OptionsMap = parse_options({child_spec, Options}, Module),
   child_spec(Module, OptionsMap);
@@ -37,6 +43,12 @@ child_spec(Module, OptionsMap) when is_atom(Module), is_map(OptionsMap) ->
 child_spec_test() ->
   ?assertEqual({gws_test, {gws_test, start_link, []}, permanent, 2000, worker, [gws_test]},
     child_spec(gws_test)),
+
+  ?assertEqual({gws_test, {gws_test, start_link, []}, temporary, brutal_kill, worker, [gws_test]},
+    child_spec(gws_test, dynamic)),
+
+  ?assertEqual({gws_test, {gws_test, start_link, []}, permanent, 2000, supervisor, [gws_test]},
+    child_spec(gws_test, supervisor)),
   ok.
 
 %%-------------------------------------------------------------------
@@ -46,6 +58,13 @@ child_spec_test() ->
 
 parse_options({child_spec, Options}, Module) when is_list(Options), is_atom(Module) ->
   DefaultValues = #{id=>Module, start=>Module, start_args=>[], restart=>permanent, shutdown=>2000, type=>worker, modules=>[Module]},
+  do_parse_options(Options, DefaultValues);
+parse_options({dynamic_child_spec, Options}, Module) when is_list(Options), is_atom(Module) ->
+  DefaultValues = #{id=>Module, start=>Module, start_args=>[], restart=>temporary, shutdown=>brutal_kill
+    , type=>worker, modules=>[Module]},
+  do_parse_options(Options, DefaultValues);
+parse_options({dynamic_sup_restart_strategy, Options}, []) when is_list(Options) ->
+  DefaultValues = #{strategy=>simple_one_for_one, intensity=>1, period=>60},
   do_parse_options(Options, DefaultValues);
 parse_options({sup_restart_strategy, Options}, []) when is_list(Options) ->
   DefaultValues = #{strategy=>one_for_one, intensity=>4, period=>60},
@@ -64,6 +83,9 @@ parse_options_test() ->
   ?assertEqual(#{id=>gws_test, start=>gws_test, start_args=>[], restart=>permanent,
     shutdown=>2000, type=>worker, modules=>[gws_test]},
     parse_options({child_spec, []}, gws_test)),
+  ?assertEqual(#{id=>gws_test, start=>gws_test, start_args=>[], restart=>temporary,
+    shutdown=>brutal_kill, type=>worker, modules=>[gws_test]},
+    parse_options({dynamic_child_spec, []}, gws_test)),
 
   ?assertEqual(#{strategy=>one_for_one, intensity=>4, period=>60},
     parse_options({sup_restart_strategy, []}, [])),
@@ -73,6 +95,9 @@ parse_options_test() ->
 sup_restart_strategy() ->
   sup_restart_strategy([]).
 
+sup_restart_strategy(dynamic) ->
+  OptionsMap = parse_options({dynamic_sup_restart_strategy, []}, []),
+  sup_restart_strategy(OptionsMap);
 sup_restart_strategy(Options) when is_list(Options) ->
   OptionsMap = parse_options({sup_restart_strategy, Options}, []),
   sup_restart_strategy(OptionsMap);
@@ -82,4 +107,5 @@ sup_restart_strategy(OptionsMap) when is_map(OptionsMap) ->
 
 sup_restart_strategy_test() ->
   ?assertEqual({one_for_one, 4, 60}, sup_restart_strategy()),
+  ?assertEqual({simple_one_for_one, 1, 60}, sup_restart_strategy(dynamic)),
   ok.
