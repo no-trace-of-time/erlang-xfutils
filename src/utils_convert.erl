@@ -21,7 +21,6 @@
   , try_ext_req/2
   , exception_string/1
   , pretty_exception_info/2
-  , bin_trim_space/1
   , get_txn_status/1
   , trans_key/1
   , trans_value/2
@@ -29,8 +28,6 @@
   , exception_resp_cd/1
 ]).
 
--define(BIN_SPACE, <<" ">>).
--define(BIN_NULL, <<"">>).
 
 
 %%=============================================================================
@@ -227,12 +224,6 @@ exception_resp_cd(mcht_refund_orig_txn_status_not_success) ->
   <<"35">>;
 exception_resp_cd(_) ->
   <<"99">>.
-%%=============================================================================
-bin_trim_space(Bin) when is_binary(Bin) ->
-  binary:replace(Bin, ?BIN_SPACE, ?BIN_NULL, [global]).
-
-bin_trim_space_test() ->
-  ?assertEqual(bin_trim_space(<<"a   b   c   ">>), <<"abc">>).
 
 
 %%=============================================================================

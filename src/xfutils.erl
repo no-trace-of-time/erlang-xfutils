@@ -89,6 +89,14 @@
   , load_private_key/2
   , load_public_key/1
 ]).
+
+%% utils_bin
+-export([
+  trim_space/1
+  , trim_space/2
+  , remove_space/1
+
+]).
 %%====================================================================
 %% API functions
 %%====================================================================
@@ -304,6 +312,16 @@ load_private_key(KeyFileName, Pwd)
 load_public_key(KeyFileName)
   when is_binary(KeyFileName) orelse is_list(KeyFileName) ->
   utils_enckey:load_public_key(KeyFileName).
+
+%%--------------------------------------------------------------------
+trim_space(Bin) when is_binary(Bin) ->
+  utils_binary:trim_space(Bin).
+
+trim_space(Bin, Option) when is_binary(Bin), is_atom(Option) ->
+  utils_binary:trim_space(Bin, Option).
+
+remove_space(Bin) when is_binary(Bin) ->
+  utils_binary:remove_space(Bin).
 %%====================================================================
 %% Internal functions
 %%====================================================================
