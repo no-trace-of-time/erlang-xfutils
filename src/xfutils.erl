@@ -247,10 +247,13 @@ up_resp_code_2_txn_status(RespCode) when is_binary(RespCode) ->
 child_spec(Module) when is_atom(Module) ->
   utils_otp:child_spec(Module).
 
-child_spec(Module, Options) when is_atom(Module), is_list(Options) ->
-  utils_otp:child_spec(Module, Options);
-child_spec(Module, OptionMap) when is_atom(Module), is_map(OptionMap) ->
-  utils_otp:child_spec(Module, OptionMap).
+child_spec(Module, Options) when is_atom(Module),
+  (is_list(Options) or is_map(Options) or
+    (Options =:= dynamic)
+  ) ->
+  utils_otp:child_spec(Module, Options).
+%%child_spec(Module, OptionMap) when is_atom(Module), is_map(OptionMap) ->
+%%  utils_otp:child_spec(Module, OptionMap).
 
 sup_restart_strategy() ->
   utils_otp:sup_restart_strategy().
