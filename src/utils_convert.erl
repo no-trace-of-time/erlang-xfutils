@@ -55,7 +55,7 @@ ext_req(Keys, Req) when is_list(Keys) ->
   F =
     fun(Key) ->
       {Key, Value} = ext_req(Key, Req),
-      {binary_to_existing_atom(Key, utf8), Value}
+      {binary_to_atom(Key, utf8), Value}
     end,
   PropValues = lists:map(F, Keys),
   PropValues.
