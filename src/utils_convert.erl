@@ -29,7 +29,6 @@
 ]).
 
 
-
 %%=============================================================================
 -spec b2l(binary()) -> list().
 b2l(Bin) ->
@@ -45,13 +44,21 @@ a2b(A) ->
 
 %%=============================================================================
 -spec ext_req(Key, Req) -> {any(), any()} when
-  Key :: term(),
+  Key :: term()| [term()],
   Req :: proplists:proplist().
-ext_req(Key, Req) ->
+ext_req(Key, Req) when is_binary(Key) ->
   case proplists:lookup(Key, Req) of
     none -> {Key, <<>>};
     Tuple -> Tuple
-  end.
+  end;
+ext_req(Keys, Req) when is_list(Keys) ->
+  F =
+    fun(Key) ->
+      {Key, Value} = ext_req(Key, Req),
+      {binary_to_existing_atom(Key, utf8), Value}
+    end,
+  PropValues = lists:map(F, Keys),
+  PropValues.
 
 -spec ext_req(Key, Req, DefaultValue) -> {any(), any()} when
   Key :: term(),
@@ -63,6 +70,12 @@ ext_req(Key, Req, DefaultValue) ->
     Tuple -> Tuple
   end.
 
+ext_req_test() ->
+  ?assertEqual([{a, 1}, {b, 2}],
+    ext_req([<<"a">>, <<"b">>]
+      , [{<<"a">>, 1}, {<<"b">>, 2}])),
+  ok.
+%%=============================================================================
 -spec try_ext_req(Key, Req) -> {any(), any()} when
   Key :: term(),
   Req :: proplists:proplist().
