@@ -61,7 +61,11 @@
 
 
 %% convert
--export([up_resp_code_2_txn_status/1]).
+-export([
+  up_resp_code_2_txn_status/1
+  , ext_req/2
+  , ext_req/3
+]).
 
 %% otp
 -export([
@@ -237,11 +241,17 @@ bin_to_pem(Bin) when is_binary(Bin) ->
 bin_to_pem_rsa(Bin) when is_binary(Bin) ->
   bin_to_hex:bin_to_pem_rsa(Bin).
 %%--------------------------------------------------------------------
+%% convert
 up_resp_code_2_txn_status(undefined) ->
   waiting;
 up_resp_code_2_txn_status(RespCode) when is_binary(RespCode) ->
   utils_convert:get_txn_status(RespCode).
 
+ext_req(Key, Req) ->
+  utils_convert:ext_req(Key, Req).
+
+ext_req(Key, Req, Default) ->
+  utils_convert:ext_req(Key, Req, Default).
 %%--------------------------------------------------------------------
 %% otp
 child_spec(Module) when is_atom(Module) ->
