@@ -101,6 +101,11 @@
   , remove_space/1
 
 ]).
+
+%% assert
+-export([
+  assert/2
+]).
 %%====================================================================
 %% API functions
 %%====================================================================
@@ -335,6 +340,10 @@ trim_space(Bin, Option) when is_binary(Bin), is_atom(Option) ->
 
 remove_space(Bin) when is_binary(Bin) ->
   utils_binary:remove_space(Bin).
+%%--------------------------------------------------------------------
+assert(Atom, Var) when is_atom(Atom) ->
+  utils_assert:assert(Atom, Var).
+
 %%====================================================================
 %% Internal functions
 %%====================================================================
