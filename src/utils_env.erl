@@ -59,6 +59,9 @@ app_env_init_for_test() ->
 get_path(home) ->
   {ok, Path} = init:get_argument(home),
   Path;
+get_path(priv) ->
+  {ok, Application} = application:which_applications(),
+  code:priv_dir(Application);
 get_path(Env) when is_atom(Env) ->
   case application:get_env(Env) of
     undefined ->
@@ -71,8 +74,11 @@ get_path(EnvList) when is_list(EnvList) ->
   Path = [[get_path(Item), "/"] || Item <- EnvList],
   lists:flatten(Path).
 
+%%-------------------------------------------------------
 get_path(App, home) when is_atom(App) ->
   get_path(home);
+get_path(App, priv) ->
+  code:priv_dir(App);
 get_path(App, Key) when is_atom(App), is_atom(Key) ->
   {ok, Path} = application:get_env(App, Key),
   Path;
