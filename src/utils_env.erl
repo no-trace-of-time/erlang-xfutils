@@ -60,7 +60,7 @@ get_path(home) ->
   {ok, Path} = init:get_argument(home),
   Path;
 get_path(priv) ->
-  {ok, Application} = application:which_applications(),
+  {ok, Application} = application:get_application(),
   code:priv_dir(Application);
 get_path(Env) when is_atom(Env) ->
   case application:get_env(Env) of
