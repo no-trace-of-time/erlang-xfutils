@@ -106,6 +106,12 @@
 -export([
   assert/2
 ]).
+
+
+%% app of xfutils
+-export([
+  app/0
+]).
 %%====================================================================
 %% API functions
 %%====================================================================
@@ -344,6 +350,15 @@ remove_space(Bin) when is_binary(Bin) ->
 assert(Atom, Var) when is_atom(Atom) ->
   utils_assert:assert(Atom, Var).
 
+%%--------------------------------------------------------------------
+app() ->
+  ?MODULE.
+
+cond_lager(App, CondKey, Level, Fmt, Vals) ->
+  utils_lager:cond_lager(App, CondKey, Level, Fmt, Vals).
+
+cond_lager(CondKey, Level, Fmt, Vals) ->
+  utils_lager:cond_lager(CondKey, Level, Fmt, Vals).
 %%====================================================================
 %% Internal functions
 %%====================================================================

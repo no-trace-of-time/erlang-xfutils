@@ -1,15 +1,17 @@
 {application, xfutils,
- [{description, "An OTP library"},
-  {vsn, "0.1.0"},
-  {registered, []},
-  {applications,
-   [kernel,
-    stdlib
-   ]},
-  {env,[]},
-  {modules, []},
+  [{description, "An OTP library"},
+    {vsn, "0.1.0"},
+    {registered, []},
+    {applications,
+      [kernel,
+        stdlib
+      ]},
+    {env, [
+      {debug_keyfile_content, false}
+    ]},
+    {modules, []},
 
-  {maintainers, []},
-  {licenses, []},
-  {links, []}
- ]}.
+    {maintainers, []},
+    {licenses, []},
+    {links, []}
+  ]}.
