@@ -92,6 +92,7 @@
   load_private_key/1
   , load_private_key/2
   , load_public_key/1
+  , load_public_key/2
 ]).
 
 %% utils_bin
