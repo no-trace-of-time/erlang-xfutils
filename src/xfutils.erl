@@ -338,6 +338,16 @@ load_public_key(KeyFileName)
   utils_enckey:load_public_key(KeyFileName).
 
 %%--------------------------------------------------------------------
+-spec load_public_key(KeyFileName, Option) -> PublicKey when
+  KeyFileName :: string() | binary(),
+  Option :: rsa,
+  PublicKey :: binary().
+load_public_key(KeyFileName, Option)
+  when is_binary(KeyFileName) orelse is_list(KeyFileName), is_atom(Option) ->
+  utils_enckey:load_public_key(KeyFileName, Option).
+
+%%--------------------------------------------------------------------
+%%--------------------------------------------------------------------
 trim_space(Bin) when is_binary(Bin) ->
   utils_binary:trim_space(Bin).
 

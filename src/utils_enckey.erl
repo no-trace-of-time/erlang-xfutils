@@ -15,6 +15,7 @@
   load_private_key/1
   , load_private_key/2
   , load_public_key/1
+  , load_public_key/2
 ]).
 
 
@@ -43,3 +44,15 @@ load_public_key(KeyFileName) ->
 %%  PublicKey = public_key:pem_entry_decode(Certificate),
 %%  lager:debug("public key = ~p", [PublicKey]),
 %%  {ok, PublicKey}.
+
+load_public_key(KeyFileName, rsa) ->
+  {ok, PemBin} = file:read_file(KeyFileName),
+  [Certificate] = public_key:pem_decode(PemBin),
+  {PublicKey, _} = public_key:pem_entry_decode(Certificate),
+  PublicKey.
+%%  catch
+%%    error:X ->
+%%      lager:error("read public key file ~p error! Msg = ~p", [KeyFileName, X]),
+%%      {<<>>, <<>>}
+%%
+%%  end.
