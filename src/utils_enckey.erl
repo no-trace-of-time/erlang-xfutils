@@ -48,7 +48,8 @@ load_public_key(KeyFileName) ->
 load_public_key(KeyFileName, rsa) ->
   {ok, PemBin} = file:read_file(KeyFileName),
   [Certificate] = public_key:pem_decode(PemBin),
-  {PublicKey, _} = public_key:pem_entry_decode(Certificate),
+  PublicKey = public_key:pem_entry_decode(Certificate),
+  utils_lager:cond_lager(debug_keyfile_content, debug, "public key = ~p", [PublicKey]),
   PublicKey.
 %%  catch
 %%    error:X ->
