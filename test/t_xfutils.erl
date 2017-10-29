@@ -56,7 +56,7 @@ yesterday__mmdd_test() ->
 now_test() ->
   <<Y:4/bytes, $-, M:2/bytes, $-, D:2/bytes,
     $T, H:2/bytes, $:, Min:2/bytes, $:, Sec:2/bytes, $.,
-    _MSec:6/bytes, "+08:00">>
+    _MSec:6/bytes, "+0",_TC:1/bytes,":00">>
     = list_to_binary(xfutils:now()),
 
   Y1 = binary_to_integer(Y),
