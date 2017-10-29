@@ -15,6 +15,8 @@
   remove_space/1
   , trim_space/1
   , trim_space/2
+  , to_lower/1
+  , to_upper/1
 ]).
 
 -define(BIN_SPACE, <<" ">>).
@@ -65,3 +67,37 @@ remove_space(Bin) when is_binary(Bin) ->
 remove_space_test() ->
   ?assertEqual(<<"abc">>, remove_space(<<"a   b   c   ">>)),
   ok.
+
+%%---------------------------------------------------------------------------------
+to_lower_byte(Byte) when ($A =< Byte) andalso (Byte =< $Z) ->
+  Byte + ($a - $A);
+to_lower_byte(Byte) ->
+  Byte.
+
+to_lower_test() ->
+  ?assertEqual([$1, $2, $a, $b, $a, $b, $z],
+    [to_lower_byte(B) || B <- [$1, $2, $a, $b, $A, $B, $Z]]),
+
+  ?assertEqual(<<"123abcabczzz">>, to_lower(<<"123abcABcZZz">>)),
+  ok.
+
+
+to_lower(Bin) when is_binary(Bin) ->
+  <<<<(to_lower_byte(Byte)):8>> || <<Byte:8>>  <= Bin>>.
+
+%%----------------------------------------------------------------------------------
+to_upper_byte(Byte) when ($a =< Byte) andalso (Byte =< $z) ->
+  Byte - ($a - $A);
+to_upper_byte(Byte) ->
+  Byte.
+
+to_upper_test() ->
+  ?assertEqual([$1, $2, $A, $B, $A, $B, $Z],
+    [to_upper_byte(B) || B <- [$1, $2, $a, $b, $A, $B, $Z]]),
+
+  ?assertEqual(<<"123ABCABCZZZ">>, to_upper(<<"123abcABcZZz">>)),
+  ok.
+
+
+to_upper(Bin) when is_binary(Bin) ->
+  <<<<(to_upper_byte(Byte)):8>> || <<Byte:8>>  <= Bin>>.

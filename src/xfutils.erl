@@ -1,4 +1,5 @@
 -module(xfutils).
+-include_lib("mixer/include/mixer.hrl").
 
 %% API exports
 %% datetime module exports
@@ -119,6 +120,11 @@
   cond_lager/4
   , cond_lager/5
 ]).
+%%--------------------------------------------------------------------
+-mixin([{utils_binary, [
+  to_lower/1
+  , to_upper/1
+]}]).
 %%====================================================================
 %% API functions
 %%====================================================================
