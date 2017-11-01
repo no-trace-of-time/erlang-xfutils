@@ -82,6 +82,8 @@ get_path(App, priv) ->
 get_path(App, Key) when is_atom(App), is_atom(Key) ->
   {ok, Path} = application:get_env(App, Key),
   Path;
+get_path(App, Key) when is_atom(App), is_binary(Key) ->
+  Key;
 get_path(App, KeyList) when is_atom(App), is_list(KeyList) ->
   Path = [[get_path(App, Item), "/"] || Item <- KeyList],
   lists:flatten(Path).
