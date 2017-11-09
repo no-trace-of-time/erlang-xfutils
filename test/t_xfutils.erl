@@ -56,7 +56,7 @@ yesterday__mmdd_test() ->
 now_test() ->
   <<Y:4/bytes, $-, M:2/bytes, $-, D:2/bytes,
     $T, H:2/bytes, $:, Min:2/bytes, $:, Sec:2/bytes, $.,
-    _MSec:6/bytes, "+0",_TC:1/bytes,":00">>
+    _MSec:6/bytes, "+0", _TC:1/bytes, ":00">>
     = list_to_binary(xfutils:now()),
 
   Y1 = binary_to_integer(Y),
@@ -102,6 +102,11 @@ prefix_yyyy_2_dtime_test() ->
   ?assertEqual(xfutils:prefix_yyyy_2_dtime(<<"12311010">>, <<"20161231">>), <<"201612311010">>),
   ?assertEqual(xfutils:prefix_yyyy_2_dtime(<<"03011010">>, <<"20160301">>), <<"201603011010">>),
   ?assertEqual(xfutils:prefix_yyyy_2_dtime(<<"03011010">>, <<"20160302">>), <<"201603011010">>),
+  ok.
+
+
+compress_test() ->
+  ?assertEqual(<<120, 156, 51, 52, 132, 1, 0, 10, 145, 1, 235>>, xfutils:deflate(<<"1111111111">>)),
   ok.
 
 		
