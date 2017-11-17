@@ -207,7 +207,7 @@ post(Url, PostString) when is_binary(Url) ->
   post(binary_to_list(Url), PostString);
 post(Url, PostString) when is_list(PostString) ->
   post(Url, list_to_binary(PostString));
-post(Url, PostString) when is_binary(PostString) ->
+post(Url, PostString) when is_list(Url), is_binary(PostString) ->
   lager:debug("do http cmd, Url = ~ts,PostString = ~ts", [Url, PostString]),
   ok, {ok, {
     {_, StatusCode, _}
