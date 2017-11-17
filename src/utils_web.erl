@@ -203,6 +203,8 @@ parse_post_body_test() ->
   ok.
 
 %%==================================================================
+post(Url, PostString) when is_binary(Url) ->
+  post(binary_to_list(Url), PostString);
 post(Url, PostString) when is_list(PostString) ->
   post(Url, list_to_binary(PostString));
 post(Url, PostString) when is_binary(PostString) ->
