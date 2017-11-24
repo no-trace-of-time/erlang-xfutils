@@ -212,7 +212,7 @@ post(Url, PostString) when is_list(PostString) ->
 post(Url, PostString) when is_binary(Url), is_binary(PostString) ->
   lager:debug("do http cmd, Url = ~ts,PostString = ~ts", [Url, PostString]),
   {ok, {{_, StatusCode, _}, Headers, Body}} = httpc:request(post,
-    {Url, [], "application/x-www-form-urlencoded", PostString},
+    {binary_to_list(Url), [], "application/x-www-form-urlencoded", PostString},
     [],
     [{body_format, binary}]
   ),
