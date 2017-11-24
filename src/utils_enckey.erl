@@ -20,10 +20,13 @@
 
 
 %%==================================================================
-load_private_key(KeyFileName) ->
+load_private_key(KeyFileName)
+  when is_binary(KeyFileName) orelse is_list(KeyFileName) ->
   load_private_key(KeyFileName, "").
 
-load_private_key(KeyFileName, Pwd) ->
+load_private_key(KeyFileName, Pwd)
+  when (is_binary(KeyFileName) orelse is_list(KeyFileName))
+  , is_list(Pwd) ->
   {ok, PemBin} = file:read_file(KeyFileName),
   [RSAEntry | _Rest] = public_key:pem_decode(PemBin),
   RsaKeyInfo = public_key:pem_entry_decode(RSAEntry, Pwd),
@@ -33,7 +36,8 @@ load_private_key(KeyFileName, Pwd) ->
 
 
 %%==================================================================
-load_public_key(KeyFileName) ->
+load_public_key(KeyFileName)
+  when is_binary(KeyFileName) orelse is_list(KeyFileName) ->
   {ok, PemBin} = file:read_file(KeyFileName),
   [Certificate] = public_key:pem_decode(PemBin),
   {_, DerCert, _} = Certificate,
@@ -45,7 +49,8 @@ load_public_key(KeyFileName) ->
 %%  lager:debug("public key = ~p", [PublicKey]),
 %%  {ok, PublicKey}.
 
-load_public_key(KeyFileName, rsa) ->
+load_public_key(KeyFileName, rsa)
+  when is_binary(KeyFileName) orelse is_list(KeyFileName) ->
   {ok, PemBin} = file:read_file(KeyFileName),
   [Certificate] = public_key:pem_decode(PemBin),
   PublicKey = public_key:pem_entry_decode(Certificate),

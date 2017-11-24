@@ -21,6 +21,8 @@
   , post/2
 ]).
 
+-define(LARGER_STACKTRACE_1(X),
+  lager:error("Error =~p,stacktrace=~ts", [X, iolist_to_binary(lager:pr_stacktrace(erlang:get_stacktrace()))])).
 %%---------
 %% Usage: check Req, if only allow post/get cond match, then return ok
 %%        otherwise send http reply 405 method not allowed
@@ -203,16 +205,23 @@ parse_post_body_test() ->
   ok.
 
 %%==================================================================
-post(Url, PostString) when is_binary(Url) ->
-  post(binary_to_list(Url), PostString);
+post(Url, PostString) when is_list(Url) ->
+  post(list_to_binary(Url), PostString);
 post(Url, PostString) when is_list(PostString) ->
   post(Url, list_to_binary(PostString));
-post(Url, PostString) when is_list(Url), is_binary(PostString) ->
+post(Url, PostString) when is_binary(Url), is_binary(PostString) ->
   lager:debug("do http cmd, Url = ~ts,PostString = ~ts", [Url, PostString]),
-  ok, {ok, {
-    {_, StatusCode, _}
-    , Header, Body
-  }} = httpc:request(post, {Url, [], "application/x-www-form-urlencoded", PostString}, [], []),
-  lager:info("post result = ~p,return header = ~p,body=~ts",
-    [StatusCode, Header, unicode:characters_to_binary(Body)]),
-  {StatusCode, Header, Body}.
+  {ok, {{_, StatusCode, _}, Headers, Body}} = httpc:request(post,
+    {Url, [], "application/x-www-form-urlencoded", PostString},
+    [],
+    [{body_format, binary}]
+  ),
+  lager:info("post StatusCode = ~p,return header = ~p,body=~ts", [StatusCode, Headers, Body]),
+  try
+    200 = StatusCode,
+    {200, Headers, Body}
+  catch
+    _:X ->
+      ?LARGER_STACKTRACE_1(X),
+      lager:error("send up req to url ~p error,PostBody = ~ts", [Url, PostString])
+  end.

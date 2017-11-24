@@ -21,7 +21,7 @@
   , try_ext_req/2
   , exception_string/1
   , pretty_exception_info/2
-  , get_txn_status/1
+  , up_resp_code_2_txn_status/1
   , trans_key/1
   , trans_value/2
   , mcht_post_field_name_map/0
@@ -240,21 +240,23 @@ exception_resp_cd(_) ->
 
 
 %%=============================================================================
--spec get_txn_status(RespCd) -> Status when
+-spec up_resp_code_2_txn_status(RespCd) -> Status when
   RespCd :: model_up_req_pay:up_respCode(),
   Status :: repo_up_txn_log:txn_status().
 
-get_txn_status(<<"00">>) ->
+up_resp_code_2_txn_status(undefined) ->
+  waiting;
+up_resp_code_2_txn_status(<<"00">>) ->
   success;
-get_txn_status(<<"A6">>) ->
+up_resp_code_2_txn_status(<<"A6">>) ->
   success;
-get_txn_status(<<"03">>) ->
+up_resp_code_2_txn_status(<<"03">>) ->
   waiting;
-get_txn_status(<<"04">>) ->
+up_resp_code_2_txn_status(<<"04">>) ->
   waiting;
-get_txn_status(<<"05">>) ->
+up_resp_code_2_txn_status(<<"05">>) ->
   waiting;
-get_txn_status(_) ->
+up_resp_code_2_txn_status(_) ->
   fail.
 
 

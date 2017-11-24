@@ -117,7 +117,9 @@ parse_datetime(TimeStr) ->
   {Seconds div 1000000, Seconds rem 1000000, MS}.
 
 % yyyy-mm-dd
-parse_date(Date) ->
+parse_date(Date) when is_binary(Date) ->
+  parse_date(list_to_binary(Date));
+parse_date(Date) when is_list(Date) ->
   [Y, M, D] = string:tokens(Date, "/-"),
   Date1 = {list_to_integer(Y), list_to_integer(M), list_to_integer(D)},
   case calendar:valid_date(Date1) of
