@@ -6,6 +6,8 @@
 -export([
   proplist_to_iolist/1
   , proplist_to_binary/1
+
+  , app/0
 ]).
 
 %%--------------------------------------------------------------------
@@ -49,6 +51,9 @@ proplist_to_iolist(PL) when is_list(PL) ->
 proplist_to_binary(PL) when is_list(PL) ->
   xf_proplists_ex:cvt_to_binary(PL).
 
+%%-----------------
+app() ->
+  ?MODULE.
 %%====================================================================
 %% Internal functions
 %%====================================================================
