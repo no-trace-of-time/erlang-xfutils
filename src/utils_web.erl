@@ -8,6 +8,7 @@
 %%%-------------------------------------------------------------------
 -module(utils_web).
 -include_lib("eunit/include/eunit.hrl").
+-include("../include/xfutils.hrl").
 -author("simonxu").
 
 %% API
@@ -21,15 +22,13 @@
   , post/2
 ]).
 
--define(LARGER_STACKTRACE_1(X),
-  lager:error("Error =~p,stacktrace=~ts", [X, iolist_to_binary(lager:pr_stacktrace(erlang:get_stacktrace()))])).
 %%---------
 %% Usage: check Req, if only allow post/get cond match, then return ok
 %%        otherwise send http reply 405 method not allowed
 %%-------
 only_allow(post, Req) ->
   {Method, Req2} = cowboy_req:method(Req),
-  lager:debug("Method = ~p~n", [Method]),
+%%  lager:debug("Method = ~p~n", [Method]),
   check_method_post(Method, Req2);
 only_allow(get, Req) ->
   {Method, Req2} = cowboy_req:method(Req),
@@ -62,8 +61,6 @@ get_post_qs(true, Req) ->
   {ok, PostValsInURL, Req1} = get_post_qs(false, Req),
   {ok, PostVals, Req2} = cowboy_req:body_qs(Req1),
   lager:debug("PostValsInURL = ~p~n,PostValsInBody = ~p", [PostValsInURL, PostVals]),
-  %{ok, Body, Req3} = cowboy_req:body(Req2),
-  %lager:debug("post body = ~p", [Body]),
   {ok, PostVals ++ PostValsInURL, Req2}.
 
 

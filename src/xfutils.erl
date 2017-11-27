@@ -32,7 +32,7 @@
   , {utils_enckey, [load_private_key/1, load_private_key/2
     , load_public_key/1, load_public_key/2]}
   , {utils_binary, [trim_space/1, trim_space/2, remove_space/1]}
-  , {utils_assert, [assert/2]}
+  , {utils_assert, [assert/2, validate/2]}
   , {utils_lager, [cond_lager/5, cond_lager/4]}
 ]).
 
