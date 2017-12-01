@@ -16,7 +16,7 @@
   , {datetime, [datetime_string_to_timestamp/1, parse_date/1]}
   , {utils_trans, [get_new_order_id/0]}
   , {utils_binary, [to_lower/1, to_upper/1]}
-  , {utils_compress, [deflate/1]}
+  , {utils_compress, [deflate/1, inflate/1]}
   , {utils_datetime, [prefix_yyyy_2_dtime/1, prefix_yyyy_2_dtime/2, prefix_yyyy_2_settle_date/1
     , prefix_yyyy_2_settle_date/2]}
   , {utils_app, [priv_dir/0, priv_dir/1]}
