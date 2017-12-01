@@ -107,6 +107,7 @@ prefix_yyyy_2_dtime_test() ->
 
 compress_test() ->
   ?assertEqual(<<120, 156, 51, 52, 132, 1, 0, 10, 145, 1, 235>>, xfutils:deflate(<<"1111111111">>)),
+  ?assertEqual(<<"1111111111">>, xfutils:inflate(<<120, 156, 51, 52, 132, 1, 0, 10, 145, 1, 235>>)),
   ok.
 
 		
