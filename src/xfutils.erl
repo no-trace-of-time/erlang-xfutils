@@ -22,7 +22,7 @@
   , {utils_app, [priv_dir/0, priv_dir/1]}
 %%  , {xf_mnesia_transform, [mnesia_dump_to_file/2, mnesia_load_from_file/1]}
   , {utils_web, [only_allow/2, post_get_qs/1, post_vals_to_string/1, post_vals_to_iolist/1, parse_post_body/1
-    , record_to_proplist/3, post/2, get/1, get/2]}
+    , record_to_proplist/3, post/2, fetch/1, fetch/2]}
   , {bin_to_hex, [bin_to_hex/1, hex_to_bin/1, bin_to_base64_lines/1, bin_to_pem/1, bin_to_pem_rsa/1]}
   , {utils_convert, [up_resp_code_2_txn_status/1, ext_req/2, ext_req/3]}
   , {utils_otp, [child_spec/1, child_spec/2

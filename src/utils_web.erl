@@ -21,8 +21,8 @@
   , parse_post_body/1
   , record_to_proplist/3
   , post/2
-  , get/2
-  , get/1
+  , fetch/2
+  , fetch/1
 ]).
 
 %%---------
@@ -226,15 +226,15 @@ post(Url, PostString) when is_binary(Url), is_binary(PostString) ->
       lager:error("send up req to url ~p error,PostBody = ~ts", [Url, PostString])
   end.
 %%==================================================================
-get(Url) when is_list(Url) ->
-  get(list_to_binary(Url));
-get(Url) when is_binary(Url) ->
-  get(Url, []).
+fetch(Url) when is_list(Url) ->
+  fetch(list_to_binary(Url));
+fetch(Url) when is_binary(Url) ->
+  fetch(Url, []).
 
-get(Url, Params) when is_list(Url), is_list(Params) ->
-  get(list_to_binary(Url), Params);
-get(Url, Params) when is_binary(Url), is_list(Params) ->
-  lager:debug("do http get, Url = ~ts,Params = ~p", [Url, Params]),
+fetch(Url, Params) when is_list(Url), is_list(Params) ->
+  fetch(list_to_binary(Url), Params);
+fetch(Url, Params) when is_binary(Url), is_list(Params) ->
+  lager:debug("do http fetch, Url = ~ts,Params = ~p", [Url, Params]),
   FullUrlBin = <<Url/binary, "?", (list_to_binary(post_vals_to_iolist(Params)))/binary>>,
   lager:debug("FullUrl = ~ts", [FullUrlBin]),
   ?debugFmt("FullUrl = ~ts", [FullUrlBin]),
@@ -247,7 +247,7 @@ get(Url, Params) when is_binary(Url), is_list(Params) ->
     ],
     [{body_format, binary}]
   ),
-  lager:info("get StatusCode = ~p,return header = ~p,body=~ts", [StatusCode, Headers, Body]),
+  lager:info("fetch StatusCode = ~p,return header = ~p,body=~ts", [StatusCode, Headers, Body]),
   try
     200 = StatusCode,
     {200, Headers, Body}
