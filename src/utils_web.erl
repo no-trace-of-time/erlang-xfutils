@@ -10,6 +10,7 @@
 -include_lib("eunit/include/eunit.hrl").
 -include("../include/xfutils.hrl").
 -author("simonxu").
+-compile({no_auto_import, [get/1]}).
 
 %% API
 -export([
@@ -20,6 +21,8 @@
   , parse_post_body/1
   , record_to_proplist/3
   , post/2
+  , get/2
+  , get/1
 ]).
 
 %%---------
@@ -221,4 +224,35 @@ post(Url, PostString) when is_binary(Url), is_binary(PostString) ->
     _:X ->
       ?LARGER_STACKTRACE_1(X),
       lager:error("send up req to url ~p error,PostBody = ~ts", [Url, PostString])
+  end.
+%%==================================================================
+get(Url) when is_list(Url) ->
+  get(list_to_binary(Url));
+get(Url) when is_binary(Url) ->
+  get(Url, []).
+
+get(Url, Params) when is_list(Url), is_list(Params) ->
+  get(list_to_binary(Url), Params);
+get(Url, Params) when is_binary(Url), is_list(Params) ->
+  lager:debug("do http get, Url = ~ts,Params = ~p", [Url, Params]),
+  FullUrlBin = <<Url/binary, "?", (list_to_binary(post_vals_to_iolist(Params)))/binary>>,
+  lager:debug("FullUrl = ~ts", [FullUrlBin]),
+  ?debugFmt("FullUrl = ~ts", [FullUrlBin]),
+  {ok, {{_, StatusCode, _}, Headers, Body}} = httpc:request(get,
+    {binary_to_list(FullUrlBin), []},
+    [
+      {ssl,
+        [{verify, verify_none}]
+      }
+    ],
+    [{body_format, binary}]
+  ),
+  lager:info("get StatusCode = ~p,return header = ~p,body=~ts", [StatusCode, Headers, Body]),
+  try
+    200 = StatusCode,
+    {200, Headers, Body}
+  catch
+    _:X ->
+      ?LARGER_STACKTRACE_1(X),
+      lager:error("send up req to url ~p error,Headers = ~p", [Url, Headers])
   end.
