@@ -6,11 +6,29 @@
 %%% @end
 %%% Created : 24. Jul 2016 17:23
 %%%-------------------------------------------------------------------
--module(t_xfutils).
+-module(xfutils_SUITE).
 -author("simonxu").
 
 -include_lib("eunit/include/eunit.hrl").
 
+setup() ->
+  application:start(xfutils),
+  application:set_env(xfutils, default_app, payment_gateway),
+  ok.
+
+my_test_() ->
+  {
+    setup
+    , fun setup/0
+    ,
+    {
+      inorder,
+      [
+        fun utils_env:get_path_test_1/0
+
+      ]
+    }
+  }.
 
 today_test() ->
   <<Y:4/bytes, M:2/bytes, D:2/bytes>> = xfutils:today(),

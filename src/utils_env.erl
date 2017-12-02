@@ -11,44 +11,46 @@
 -author("simon").
 
 %% API
--export([get_path/1,
+-export([
+  get_path/1,
   get_path/2,
   get_filename/1,
   get_filename/2,
-%%  app_env_init_for_test/0,
-  app_env_init_for_test/2,
-  app_env_init_for_test/0,
+  app_env_init_for_test_env/2,
+  app_env_init_for_test_env/0,
   get/1
 ]).
 
--define(DEFAULT_APP, payment_gateway).
+-export([
+  get_path_test_1/0
+]).
+
+%%-define(DEFAULT_APP, payment_gateway).
+default_app() ->
+  {ok, DefaultApp} = application:get_env(xfutils, default_application),
+  DefaultApp.
 
 get(Key) ->
   case application:get_env(Key) of
     undefined ->
-%%      case application:get_env(?DEFAULT_APP, Key) of
-%%        undefined ->
       undefined;
-%%        {ok, Value} ->
-%%          Value
-%%  end;
     {ok, Value} ->
       Value
   end.
 
-app_env_init_for_test(App, Props) when is_atom(App), is_list(Props) ->
+app_env_init_for_test_env(App, Props) when is_atom(App), is_list(Props) ->
   F = fun
         ({Key, Value}) ->
           application:set_env(App, Key, Value)
       end,
   lists:map(F, Props).
 
-app_env_init_for_test() ->
-%%  App = payment_gateway,
-  application:set_env(?DEFAULT_APP, priv_dir, "/priv"),
-  application:set_env(?DEFAULT_APP, mcht_keys_dir, "/keys/mcht"),
-  application:set_env(?DEFAULT_APP, up_keys_dir, "/keys"),
-  application:set_env(?DEFAULT_APP, db_backup_dir, "/backup.db/"),
+app_env_init_for_test_env() ->
+  APP = default_app(),
+  application:set_env(APP, priv_dir, "/priv"),
+  application:set_env(APP, mcht_keys_dir, "/keys/mcht"),
+  application:set_env(APP, up_keys_dir, "/keys"),
+  application:set_env(APP, db_backup_dir, "/backup.db/"),
   ok.
 
 
@@ -63,9 +65,10 @@ get_path(priv) ->
   {ok, Application} = application:get_application(),
   code:priv_dir(Application);
 get_path(Env) when is_atom(Env) ->
+  APP = default_app(),
   case application:get_env(Env) of
     undefined ->
-      {ok, Path} = application:get_env(?DEFAULT_APP, Env),
+      {ok, Path} = application:get_env(APP, Env),
       Path;
     {ok, Path} ->
       Path
@@ -115,8 +118,8 @@ get_file_test() ->
   ?assertEqual("/ab/c", droplast("/ab/c", $/)),
   ok.
 
-get_path_test() ->
-  App = payment_gateway,
+get_path_test_1() ->
+  App = default_app(),
   application:set_env(App, test1, "/aaa/bbb"),
   application:set_env(App, test2, "/ccc/ddd"),
   application:set_env(App, file1, "filename"),

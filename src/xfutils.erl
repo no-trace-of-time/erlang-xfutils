@@ -28,7 +28,7 @@
   , {utils_otp, [child_spec/1, child_spec/2
     , sup_restart_strategy/0, sup_restart_strategy/1, parse_options/2]}
   , {utils_env, [get/1, get_path/1, get_path/2, get_filename/1, get_filename/2
-    , app_env_init_for_test/2, app_env_init_for_test/0]}
+    , app_env_init_for_test_env/2, app_env_init_for_test_env/0]}
   , {utils_enckey, [load_private_key/1, load_private_key/2
     , load_public_key/1, load_public_key/2]}
   , {utils_binary, [trim_space/1, trim_space/2, remove_space/1]}

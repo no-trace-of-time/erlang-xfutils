@@ -8,6 +8,7 @@
       ]},
     {env, [
       {debug_keyfile_content, false}
+      , {default_application, payment_gateway}
     ]},
     {modules, []},
 
